@@ -1,5 +1,4 @@
 defmodule ContractManagement.NaturalPersonContext do
-
   alias ContractManagement.{NaturalPerson, Repo}
 
   def create(params) do

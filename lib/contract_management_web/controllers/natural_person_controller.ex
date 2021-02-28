@@ -4,7 +4,6 @@ defmodule ContractManagementWeb.NaturalPersonController do
   # action_fallback ContractManagementWeb.FallbackController
 
   def create(conn, params) do
-
     with {:ok, natural_person} <- ContractManagement.create_natural_person(params) do
       conn
       |> put_status(:created)
