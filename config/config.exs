@@ -19,6 +19,10 @@ config :contract_management, ContractManagementWeb.Endpoint,
   pubsub_server: ContractManagement.PubSub,
   live_view: [signing_salt: "JXr0IKds"]
 
+config :contract_management, ContractManagement.Repo,
+  migration_primary_key: [type: :binary_id],
+  migration_foreign_key: [type: :binary_id]
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
