@@ -7,6 +7,8 @@ defmodule ContractManagementWeb.Router do
 
   scope "/api", ContractManagementWeb do
     pipe_through :api
+
+    resources "/natural_person", NaturalPersonController, only: [:create]
   end
 
   # Enables LiveDashboard only for development
