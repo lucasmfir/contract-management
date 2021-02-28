@@ -1,7 +1,7 @@
 defmodule ContractManagementWeb.NaturalPersonController do
   use ContractManagementWeb, :controller
 
-  # action_fallback ContractManagementWeb.FallbackController
+  action_fallback ContractManagementWeb.FallbackController
 
   def create(conn, params) do
     with {:ok, natural_person} <- ContractManagement.create_natural_person(params) do
