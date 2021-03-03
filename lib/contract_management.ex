@@ -7,7 +7,9 @@ defmodule ContractManagement do
   if it comes from the database, an external API or others.
   """
 
-  alias ContractManagement.NaturalPersonContext
+  alias ContractManagement.{LegalPersonContext, NaturalPersonContext}
 
   defdelegate create_natural_person(params), to: NaturalPersonContext, as: :create
+
+  defdelegate create_legal_person(params), to: LegalPersonContext, as: :create
 end

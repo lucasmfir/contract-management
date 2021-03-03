@@ -1,4 +1,4 @@
-defmodule ContractManagement.NaturalPerson do
+defmodule ContractManagement.LegalPerson do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -21,7 +21,7 @@ defmodule ContractManagement.NaturalPerson do
     |> cast(params, @required_params)
     |> validate_required(@required_params)
     |> validate_length(:cnpj, is: 14)
-    |> validate_format(:cpf, ~r/^[0-9]*$/)
+    |> validate_format(:cnpj, ~r/^[0-9]*$/)
     |> unique_constraint([:cnpj])
   end
 end
