@@ -1,5 +1,4 @@
 defmodule ContractManagementWeb.LegalPersonView do
-
   def render("create.json", %{legal_person: legal_person}) do
     %{
       message: "legal person created",
