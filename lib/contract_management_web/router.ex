@@ -8,8 +8,8 @@ defmodule ContractManagementWeb.Router do
   scope "/api", ContractManagementWeb do
     pipe_through :api
 
-    resources "/natural_person", NaturalPersonController, only: [:create]
-    resources "/legal_person", LegalPersonController, only: [:create]
+    resources "/natural_person", NaturalPersonController, only: [:index, :create]
+    resources "/legal_person", LegalPersonController, only: [:index, :create]
     resources "/contract", ContractController, only: [:create]
   end
 

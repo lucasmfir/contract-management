@@ -1,6 +1,17 @@
 defmodule ContractManagement.LegalPersonContext do
   alias ContractManagement.{Address, LegalPerson, Repo}
+
+  import Ecto.Query
+
   alias Ecto.Multi
+
+  def get_all() do
+    query = from l_p in LegalPerson, preload: [:address]
+
+    legal_people = Repo.all(query)
+
+    {:ok, legal_people}
+  end
 
   def create(%{"legal_person" => legal_person_data, "address" => address_data}) do
     Multi.new()
