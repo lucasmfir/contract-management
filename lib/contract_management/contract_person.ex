@@ -6,13 +6,13 @@ defmodule ContractManagement.ContractPerson do
 
   @primary_key {:id, :binary_id, autogenerate: true}
 
-  @required_params ~w(contract_id person_id person_type])a
+  @required_params ~w(contract_id person_id person_type)a
   @foreign_key_type :binary_id
 
   schema "contract_person" do
     field :person_id, :binary_id
     field :person_type, Ecto.Enum, values: [:natural_person, :legal_person]
-    belongs_to :contract_id, Contract
+    belongs_to :contract, Contract
 
     timestamps()
   end

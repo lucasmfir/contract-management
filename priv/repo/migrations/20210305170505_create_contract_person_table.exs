@@ -9,7 +9,7 @@ defmodule ContractManagement.Repo.Migrations.CreateContractPersonTable do
       add(:person_id, :binary_id)
       add(:person_type, :person_type)
 
-      timestamps()
+      timestamps(default: fragment("now()"))
     end
 
     create unique_index(:contract_person, [:contract_id, :person_id])

@@ -12,6 +12,7 @@ defmodule ContractManagement.Contract do
     field :file, :binary
     field :description, :string
     field :date, :date
+    has_many :contract_person, ContractPerson
 
     timestamps()
   end
