@@ -13,7 +13,7 @@ defmodule ContractManagement.ContractContext do
     end)
     |> Multi.run(:create_contract_natural_person, fn _repo, %{create_contract: contract} ->
       params["natural_people"]
-      |> contract_people_list(contract.id, :legal_person)
+      |> contract_people_list(contract.id, :natural_person)
       |> insert_contract_people()
     end)
     |> run_transaction
