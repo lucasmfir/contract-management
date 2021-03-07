@@ -10,7 +10,7 @@ defmodule ContractManagementWeb.Router do
 
     resources "/natural_person", NaturalPersonController, only: [:index, :create]
     resources "/legal_person", LegalPersonController, only: [:index, :create]
-    resources "/contract", ContractController, only: [:create]
+    resources "/contract", ContractController, only: [:index, :create]
   end
 
   # Enables LiveDashboard only for development

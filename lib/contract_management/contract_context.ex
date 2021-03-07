@@ -3,6 +3,20 @@ defmodule ContractManagement.ContractContext do
 
   alias Ecto.Multi
 
+  import Ecto.Query
+
+  def get_all() do
+    query =
+      from c in Contract,
+        preload: [:contract_person]
+
+    contracts = Repo.all(query)
+
+    contracts_response = format_contracts_response(contracts)
+
+    {:ok, contracts_response}
+  end
+
   def create(params) do
     Multi.new()
     |> Multi.insert(:create_contract, Contract.changeset(params))
@@ -57,5 +71,35 @@ defmodule ContractManagement.ContractContext do
     people_ids = Enum.map(contract_people, fn contract_person -> contract_person.person_id end)
 
     {:ok, people_ids}
+  end
+
+  defp extract_people_from_contract(contract, person_type) do
+    Enum.filter(contract.contract_person, fn contract_person ->
+      contract_person.person_type == person_type
+    end)
+  end
+
+  defp extract_people_ids(people) do
+    Enum.map(people, fn person ->
+      person.id
+    end)
+  end
+
+  defp people_ids_list(contract, person_type) do
+    contract
+    |> extract_people_from_contract(person_type)
+    |> extract_people_ids()
+  end
+
+  defp format_contracts_response(contracts) do
+    Enum.map(contracts, fn contract ->
+      legal_people_ids = people_ids_list(contract, :legal_person)
+
+      natural_people_ids = people_ids_list(contract, :natural_person)
+
+      contract
+      |> Map.put(:legal_people, legal_people_ids)
+      |> Map.put(:natural_people, natural_people_ids)
+    end)
   end
 end
