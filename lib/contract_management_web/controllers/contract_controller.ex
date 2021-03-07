@@ -3,8 +3,8 @@ defmodule ContractManagementWeb.ContractController do
 
   action_fallback ContractManagementWeb.FallbackController
 
-  def index(conn, _params) do
-    with {:ok, contracts} <- ContractManagement.get_contracts() do
+  def index(conn, params) do
+    with {:ok, contracts} <- ContractManagement.get_contracts(params) do
       conn
       |> put_status(:ok)
       |> render("index.json", contracts: contracts)

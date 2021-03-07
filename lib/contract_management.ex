@@ -15,6 +15,6 @@ defmodule ContractManagement do
   defdelegate get_legal_people(), to: LegalPersonContext, as: :get_all
   defdelegate create_legal_person(params), to: LegalPersonContext, as: :create
 
-  defdelegate get_contracts(), to: ContractContext, as: :get_all
+  defdelegate get_contracts(params), to: ContractContext, as: :get_contracts
   defdelegate create_contract(params), to: ContractContext, as: :create
 end

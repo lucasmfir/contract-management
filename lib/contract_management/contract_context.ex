@@ -5,17 +5,50 @@ defmodule ContractManagement.ContractContext do
 
   import Ecto.Query
 
-  def get_all() do
+  def get_contracts(params) do
     query =
-      from c in Contract,
-        preload: [:contract_person]
+      from(c in Contract)
+      |> apply_query_filter(:people_ids, params)
+      |> apply_query_filter(:date, params)
 
-    contracts = Repo.all(query)
-
-    contracts_response = format_contracts_response(contracts)
+    contracts_response =
+      (from _ in query, preload: [:contract_person])
+      |> Repo.all()
+      |> format_contracts_response()
 
     {:ok, contracts_response}
   end
+
+  defp apply_query_filter(query, :people_ids, %{"peopleIds" => people_ids}) do
+    people_ids_list = String.split(people_ids, ",")
+
+    from c in query,
+      join: c_p in ContractPerson,
+      on: c_p.contract_id == c.id,
+      where: c_p.person_id in ^people_ids_list
+  end
+
+  defp apply_query_filter(query, :date, %{"dates" => dates}) do
+    dates =
+      dates
+      |> String.split(",")
+      |> Enum.map(fn date -> Date.from_iso8601(date) end)
+
+    case dates do
+      [{:ok, date1}, {:ok, date2}] ->
+        from c in query,
+          where: c.date >= ^date1 and c.date <= ^date2
+
+      [{:ok, date}] ->
+        from c in query,
+          where: c.date == ^date
+
+      _ ->
+        query
+    end
+  end
+
+  defp apply_query_filter(query, _filter_type, _params), do: query
 
   def create(params) do
     Multi.new()
@@ -81,7 +114,7 @@ defmodule ContractManagement.ContractContext do
 
   defp extract_people_ids(people) do
     Enum.map(people, fn person ->
-      person.id
+      person.person_id
     end)
   end
 
