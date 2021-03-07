@@ -9,6 +9,7 @@ defmodule ContractManagement do
 
   alias ContractManagement.{ContractContext, LegalPersonContext, NaturalPersonContext}
 
+  defdelegate get_natural_people(), to: NaturalPersonContext, as: :get_all
   defdelegate create_natural_person(params), to: NaturalPersonContext, as: :create
 
   defdelegate get_legal_people(), to: LegalPersonContext, as: :get_all

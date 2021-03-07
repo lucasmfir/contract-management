@@ -3,6 +3,14 @@ defmodule ContractManagementWeb.NaturalPersonController do
 
   action_fallback ContractManagementWeb.FallbackController
 
+  def index(conn, _params) do
+    with {:ok, natural_people} <- ContractManagement.get_natural_people() do
+      conn
+      |> put_status(:ok)
+      |> render("index.json", natural_people: natural_people)
+    end
+  end
+
   def create(conn, params) do
     with {:ok, natural_person} <- ContractManagement.create_natural_person(params) do
       conn
