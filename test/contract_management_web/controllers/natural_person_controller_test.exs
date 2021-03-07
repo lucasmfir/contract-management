@@ -1,6 +1,8 @@
 defmodule ContractManagementWeb.NaturalPersonControllerTest do
   use ContractManagementWeb.ConnCase, async: true
 
+  alias ContractManagement.NaturalPersonContext
+
   @natural_person_params %{
     "name" => "name",
     "cpf" => "12345678900",
@@ -32,6 +34,35 @@ defmodule ContractManagementWeb.NaturalPersonControllerTest do
         |> json_response(:bad_request)
 
       assert %{"message" => %{} = _errors} = response
+    end
+  end
+
+  describe "index/2" do
+    test "when there is natural people to list", %{conn: conn} do
+      NaturalPersonContext.create(@natural_person_params)
+
+        @natural_person_params
+        |> Map.put("cpf", "99999999900")
+        |> NaturalPersonContext.create()
+
+      response =
+        conn
+        |> get(Routes.natural_person_path(conn, :index))
+        |> json_response(:ok)
+
+      assert %{"natural_people" => [_ | _]} = response
+      assert length(response["natural_people"]) == 2
+    end
+
+    test "when there is no natural people", %{conn: conn} do
+      response =
+        conn
+        |> get(Routes.natural_person_path(conn, :index))
+        |> json_response(:ok)
+
+      assert %{
+               "natural_people" => []
+             } = response
     end
   end
 end

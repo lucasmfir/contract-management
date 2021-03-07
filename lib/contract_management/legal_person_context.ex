@@ -5,7 +5,7 @@ defmodule ContractManagement.LegalPersonContext do
 
   alias Ecto.Multi
 
-  def get_all do
+  def list do
     query = from l_p in LegalPerson, preload: [:address]
 
     legal_people = Repo.all(query)

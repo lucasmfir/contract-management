@@ -4,7 +4,7 @@ defmodule ContractManagementWeb.LegalPersonController do
   action_fallback ContractManagementWeb.FallbackController
 
   def index(conn, _params) do
-    with {:ok, legal_people} <- ContractManagement.get_legal_people() do
+    with {:ok, legal_people} <- ContractManagement.list_legal_people() do
       conn
       |> put_status(:ok)
       |> render("index.json", legal_people: legal_people)

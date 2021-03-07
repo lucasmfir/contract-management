@@ -49,4 +49,18 @@ defmodule ContractManagement.NaturalPersonContextTest do
               }} = NaturalPersonContext.create(invalid_params)
     end
   end
+
+  describe "list/1" do
+    test "when function is called return all natural people" do
+      NaturalPersonContext.create(@natural_person_params)
+
+      @natural_person_params
+      |> Map.put("cpf", "99999999900")
+      |> NaturalPersonContext.create()
+
+      natural_people = NaturalPersonContext.list()
+
+      assert {:ok, [%NaturalPerson{}, %NaturalPerson{}]} = natural_people
+    end
+  end
 end

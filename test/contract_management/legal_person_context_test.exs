@@ -57,4 +57,18 @@ defmodule ContractManagement.LegalPersonContextTest do
               }} = LegalPersonContext.create(invalid_params)
     end
   end
+
+  describe "list/1" do
+    test "when function is called return all legal people" do
+      LegalPersonContext.create(@legal_person_params)
+
+      @legal_person_params
+      |> Map.put("cnpj", "99999999999900")
+      |> LegalPersonContext.create()
+
+      legal_people = LegalPersonContext.list()
+
+      assert {:ok, [%LegalPerson{}, %LegalPerson{}]} = legal_people
+    end
+  end
 end

@@ -3,7 +3,7 @@ defmodule ContractManagement.NaturalPersonContext do
 
   import Ecto.Query
 
-  def get_all() do
+  def list do
     query = from(n_p in NaturalPerson)
 
     natural_people = Repo.all(query)
