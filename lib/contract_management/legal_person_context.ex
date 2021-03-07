@@ -13,11 +13,11 @@ defmodule ContractManagement.LegalPersonContext do
     {:ok, legal_people}
   end
 
-  def create(%{"legal_person" => legal_person_data, "address" => address_data}) do
+  def create(params) do
     Multi.new()
-    |> Multi.insert(:create_legal_person, LegalPerson.changeset(legal_person_data))
+    |> Multi.insert(:create_legal_person, LegalPerson.changeset(params))
     |> Multi.run(:create_address, fn repo, %{create_legal_person: legal_person} ->
-      insert_address(address_data, legal_person.id, repo)
+      insert_address(params["address"], legal_person.id, repo)
     end)
     |> run_transaction
   end

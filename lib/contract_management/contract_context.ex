@@ -12,7 +12,7 @@ defmodule ContractManagement.ContractContext do
       |> apply_query_filter(:date, params)
 
     contracts_response =
-      (from _ in query, preload: [:contract_person])
+      from(_ in query, preload: [:contract_person])
       |> Repo.all()
       |> format_contracts_response()
 
