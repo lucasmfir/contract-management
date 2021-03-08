@@ -5,7 +5,7 @@ defmodule ContractManagement.ContractContext do
 
   import Ecto.Query
 
-  def get_contracts(params) do
+  def list(params) do
     query =
       from(c in Contract)
       |> apply_query_filter(:people_ids, params)
