@@ -171,5 +171,81 @@ defmodule ContractManagement.ContractContextTest do
     test "when function is called but there is no contract" do
       assert {:ok, []} = ContractContext.list(%{})
     end
+
+    test "when function is called with people filter", %{
+      natural_person: natural_person,
+      legal_person: legal_person
+    } do
+      upload_file = %Plug.Upload{
+        path: "test/files/file.pdf",
+        filename: "file name",
+        content_type: "application/pdf"
+      }
+
+      contract_params_with_natural =
+        Map.merge(
+          @contract_params,
+          %{
+            "file_data" => upload_file,
+            "natural_people" => natural_person.id
+          }
+        )
+
+      contract_params_with_legal =
+        Map.merge(
+          @contract_params,
+          %{
+            "file_data" => upload_file,
+            "legal_people" => legal_person.id
+          }
+        )
+
+      ContractContext.create(contract_params_with_natural)
+      ContractContext.create(contract_params_with_legal)
+
+      {:ok, [contract] = contracts_list} =
+        ContractContext.list(%{"peopleIds" => natural_person.id})
+
+      assert length(contracts_list) == 1
+      assert Enum.member?(contract.natural_people, natural_person.id)
+    end
+
+    test "when function is called with date filter", %{
+      natural_person: natural_person,
+      legal_person: legal_person
+    } do
+      upload_file = %Plug.Upload{
+        path: "test/files/file.pdf",
+        filename: "file name",
+        content_type: "application/pdf"
+      }
+
+      contract_params_from_2019 =
+        Map.merge(
+          @contract_params,
+          %{
+            "file_data" => upload_file,
+            "natural_people" => natural_person.id,
+            "date" => "2019-10-10"
+          }
+        )
+
+      contract_params_from_2020 =
+        Map.merge(
+          @contract_params,
+          %{
+            "file_data" => upload_file,
+            "legal_people" => legal_person.id,
+            "date" => "2020-10-10"
+          }
+        )
+
+      {:ok, contract_from_2019} = ContractContext.create(contract_params_from_2019)
+      ContractContext.create(contract_params_from_2020)
+
+      {:ok, [contract]} = ContractContext.list(%{"dates" => "2018-10-10,2019-11-11"})
+
+      assert contract_from_2019.id == contract.id
+    end
   end
 end
