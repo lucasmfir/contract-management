@@ -49,9 +49,9 @@ defmodule ContractManagementWeb.LegallPersonControllerTest do
     test "when there is legal people to list", %{conn: conn} do
       LegalPersonContext.create(@legal_person_params)
 
-        @legal_person_params
-        |> Map.put("cnpj", "99999999999900")
-        |> LegalPersonContext.create()
+      @legal_person_params
+      |> Map.put("cnpj", "99999999999900")
+      |> LegalPersonContext.create()
 
       response =
         conn

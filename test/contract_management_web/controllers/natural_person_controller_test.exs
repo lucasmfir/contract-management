@@ -41,9 +41,9 @@ defmodule ContractManagementWeb.NaturalPersonControllerTest do
     test "when there is natural people to list", %{conn: conn} do
       NaturalPersonContext.create(@natural_person_params)
 
-        @natural_person_params
-        |> Map.put("cpf", "99999999900")
-        |> NaturalPersonContext.create()
+      @natural_person_params
+      |> Map.put("cpf", "99999999900")
+      |> NaturalPersonContext.create()
 
       response =
         conn
