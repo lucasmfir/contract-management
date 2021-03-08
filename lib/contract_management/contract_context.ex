@@ -19,6 +19,22 @@ defmodule ContractManagement.ContractContext do
     {:ok, contracts_response}
   end
 
+  def create(params) do
+    Multi.new()
+    |> Multi.insert(:create_contract, Contract.changeset(params))
+    |> Multi.run(:create_contract_legal_person, fn _repo, %{create_contract: contract} ->
+      params["legal_people"]
+      |> contract_people_list(contract.id, :legal_person)
+      |> insert_contract_people()
+    end)
+    |> Multi.run(:create_contract_natural_person, fn _repo, %{create_contract: contract} ->
+      params["natural_people"]
+      |> contract_people_list(contract.id, :natural_person)
+      |> insert_contract_people()
+    end)
+    |> run_transaction
+  end
+
   defp apply_query_filter(query, :people_ids, %{"peopleIds" => people_ids}) do
     people_ids_list = String.split(people_ids, ",")
 
@@ -49,22 +65,6 @@ defmodule ContractManagement.ContractContext do
   end
 
   defp apply_query_filter(query, _filter_type, _params), do: query
-
-  def create(params) do
-    Multi.new()
-    |> Multi.insert(:create_contract, Contract.changeset(params))
-    |> Multi.run(:create_contract_legal_person, fn _repo, %{create_contract: contract} ->
-      params["legal_people"]
-      |> contract_people_list(contract.id, :legal_person)
-      |> insert_contract_people()
-    end)
-    |> Multi.run(:create_contract_natural_person, fn _repo, %{create_contract: contract} ->
-      params["natural_people"]
-      |> contract_people_list(contract.id, :natural_person)
-      |> insert_contract_people()
-    end)
-    |> run_transaction
-  end
 
   defp contract_people_list(nil, _contract_id, _person_type), do: []
 
