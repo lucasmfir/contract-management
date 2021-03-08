@@ -45,5 +45,5 @@ jobs:
         POSTGRES_HOST: postgres
         POSTGRES_PORT: $❴❴ job.services.postgres.ports[5432] ❵❵
 
-    - name: Check code qualit
+    - name: Check code quality
       run: mix format --check-formatted && mix credo --strict
